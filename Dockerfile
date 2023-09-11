@@ -12,6 +12,12 @@ RUN npm run production
 
 FROM debian:bookworm-slim as base
 
+LABEL org.opencontainers.image.source="https://github.com/oblakstudio/mailcare" \
+    org.opencontainers.image.authors="Oblak Studio <support@oblak.studio>" \
+    org.opencontainers.image.title="Mailcare" \
+    org.opencontainers.image.description="Docker Optimized Mailcare.io app" \
+    org.opencontainers.image.licenses="MIT"
+
 ARG NUID=101
 ARG NGID=101
 
