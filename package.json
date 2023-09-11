@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "mix --production",
+    "semantic-release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/github": "^9.0.5",
+    "axios": "^1.5.0",
+    "bulma": "^0.8",
+    "laravel-mix": "^6.0.49",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.32.1",
+    "sass-loader": "^13.3.2",
+    "semantic-release": "^21.1.1",
+    "vue": "^2.7.14",
+    "vue-loader": "^15.10.2",
+    "vue-template-compiler": "^2.7.14"
+  }
+}

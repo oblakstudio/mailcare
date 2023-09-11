@@ -1,0 +1,374 @@
+FORMAT: 1A
+HOST: https://mc3.email/api/
+
+# MailCare API Documentation
+
+MailCare is an open source disposable email address service.
+
+The domain **mc3.email** is used as a demo, it can be changed at any time.
+
+#### Versions
+By default, all requests receive the last version of the REST API. 
+We encourage you to explicitly request this version via the Accept header if you're building an application and care about the stability of the API.
+
+```
+Accept: application/vnd.mailcare.v1+json
+```
+
+#### Authentication
+By default, all requests are public but you can contact the support to activate Basic authentication. 
+The client sends HTTPS requests with the Authorization header that contains the word Basic word followed by a space and a base64-encoded string email:password. 
+For example, to authorize as demo@mc3.email / p@55w0rd the client would send: Authorization: Basic ZGVtb0B0b3JtLnh5ejpwQDU1dzByZA==.
+
+
+# Data Structures
+
+## Links (object)
+
++ first: `https://mc3.email/api/emails?page=1` (string)
++ last: `https://mc3.email/api/emails?page=12` (string)
++ prev: `https://mc3.email/api/emails?page=6` (string)
++ next: `https://mc3.email/api/emails?page=8` (string)
+
+## Meta (object)
+
++ current_page: 7 (number)
++ from: 1 (number)
++ last_page: 12 (number)
++ path: `https://mc3.email/api/emails` (string)
++ per_page: 25 (number)
++ to: 12 (number)
++ total: 300 (number)
+
+## Email (object)
+
++ id: `9bf63f3b-4e4e-46a0-8c7d-2d6d32576a1d` (string)
++ sender (Sender) - sender of the email
++ inbox (Inbox) - inbox of the email
++ subject: `Welcome to mailcare.io` (string)
++ created_at: `2018-01-19T12:23:27+00:00` (string)
++ read: `2018-01-19T12:23:27+00:00` (string)
++ favorite: false (boolean)
++ has_html: true (boolean)
++ has_text: true (boolean)
++ size_in_bytes: 40240 (number)
++ attachments (array[Attachment])
+
+## Sender (object)
+
++ id: `9bf63f3b-4e4e-46a0-8c7d-2d6d32576a1d` (string)
++ display_name: Louis (string)
++ email: louis@example.com (string)
++ created_at: `2018-01-19T12:23:27+00:00` (string)
++ updated_at: `2018-01-19T12:23:27+00:00` (string)
+
+## Inbox (object)
+
++ id: `9bf63f3b-4e4e-46a0-8c7d-2d6d32576a1d` (string)
++ display_name: Claire (string)
++ email: claire@example.com (string)
++ created_at: `2018-01-19T12:23:27+00:00` (string)
++ updated_at: `2018-01-19T12:23:27+00:00` (string)
+
+## Attachment (object)
+
++ id: `238515b6-9a2f-4797-aed6-e7d36a7df430` (string)
++ email_id: `7dfc9fea-c496-4623-8784-de53706dad7f` (string)
++ headers_hashed: `b84bcb9dfc8d0a17a089073c0355ad58` (string)
++ file_name: `signature.jpg` (string)
++ content_type: `image/jpg` (string)
++ size_in_bytes: 33996 (number)
++ created_at: `2018-01-19 12:23:27` (string)
++ updated_at: `2018-01-19 12:23:27` (string)
++ size_for_human: `34.00kB` (string)
+
+## Statistic (object)
+
++ created_at: `2018-01-19` (string)
++ emails_received: 10 (number)
++ inboxes_created: 3 (number)
++ storage_used: 33996 (number)
++ cumulative_storage_used: 33996 (number)
++ emails_deleted: 1 (number)
+
+## MetaStatistic (object)
+
++ emails_received: 786 (number)
++ inboxes_created: 68 (number)
++ storage_used_for_human: `48.08MB` (string)
++ storage_used: 48083603 (number)
++ total_space: 148083603 (number)
++ emails_deleted: 9 (number)
+
+## Automation (object)
+
++ id: `238515b6-9a2f-4797-aed6-e7d36a7df430` (string)
++ title: `Save pdf invoices` (string)
++ sender: `shop@example.com` (string)
++ inbox: `claire@example.com` (string)
++ subject: `New invoice` (string)
++ has_attachments: true (boolean)
++ action_url: `https://example.com/webhooks/save-pdf-invoices` (string)
++ action_secret_token: `SECRET12345$` (string)
++ emails_received: 10 (number)
++ created_at: `2018-01-19T12:23:27+00:00` (string)
++ updated_at: `2018-01-19T12:23:27+00:00` (string)
+
+
+## Emails Resource [/emails]
+
+### List of emails [GET /emails{?page}{?limit}{?inbox}{?sender}{?subject}{?since}{?until}{?search}{?unread}{?favorite}]
+
++ Parameters
+    + page: `2` (number, optional) - Page requested
+        + Default: `1`
+    + limit: `100` (number, optional) - Maximum number of emails to retrieve
+        + Default: `25`
+    + inbox: `test@example.com` (string, optional) - Filter by inbox
+    + sender: `test@example.com` (string, optional) - Filter by sender
+    + subject: `Welcome` (string, optional) - Search by subject (joker * accepted)
+    + since: `2018-01-19T12:23:27+00:00` (string, optional) - Include only emails after the specified date
+    + until: `2018-01-19T12:23:27+00:00` (string, optional) - Include only emails before the specified date
+    + search: `matching` (string, optional) - Search by inbox or sender or subject
+    + unread: `true` (boolean, optional) - Filter only by unread
+    + favorite: `true` (boolean, optional) - Filter only by favorite
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+    + Attributes
+        + data (array[Email])
+        + links (Links)
+        + meta (Meta)
+
+
+
+## Email Resource [/emails/{id}]
+
++ Parameters
+    + id: `9bf63f3b-4e4e-46a0-8c7d-2d6d32576a1d` (string, required) - ID of the email
+
+### Get an email [GET]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+    + Attributes
+        + data (Email)
+
++ Request
+
+    + Headers
+
+            Accept: text/plain
+
++ Response 200 (text/plain)
+
+        Welcome to mailcare.io
+        Follow this link to continue: https://mailcare.io
+        
++ Request
+
+    + Headers
+
+            Accept: text/html
+
++ Response 200 (text/html)
+
+        <div>
+            <h1>Welcome to mailcare.io</h1>
+            <p>
+                Follow this link to continue <a href="https://mailcare.io">mailcare.io</a>
+            </p>
+        </div>
+
++ Request
+
+    + Headers
+
+            Accept: message/rfc2822
+
++ Response 200 (message/rfc2822)
+
+        From test@example.com  Sun Jun 16 17:50:14 2013
+        MIME-Version: 1.0
+        Date: Sun, 16 Jun 2013 17:50:12 +0200
+        Subject: =?ISO-8859-1?Q?Mail_avec_fichier_attach=E9_de_1ko?=
+        From: Name <test@example.com>
+        To: test@example.com
+        Content-Type: multipart/mixed; boundary=047d7b1635f77236f404df476f85
+        
+        --047d7b1635f77236f404df476f85
+        Content-Type: multipart/alternative; boundary=047d7b1635f77236f004df476f83
+        
+        --047d7b1635f77236f004df476f83
+        Content-Type: text/plain; charset=ISO-8859-1
+        
+        this is text part
+        
+        --047d7b1635f77236f004df476f83
+        Content-Type: text/html; charset=ISO-8859-1
+        
+        <div>this is html part</div>
+        
+        --047d7b1635f77236f004df476f83--
+        --047d7b1635f77236f404df476f85
+        Content-Type: application/octet-stream; name=attach01
+        Content-Disposition: attachment; filename=attach01
+        Content-Transfer-Encoding: base64
+        X-Attachment-Id: f_hi0eudw60
+        
+        YQo=
+        --047d7b1635f77236f404df476f85--
+
+
++ Response 404 (application/vnd.mailcare.v1+json)
+
+        {
+            "message": "No query results for model [App\\Email] 9f0de6bf-ede4-4d8b-886f-1de5a8cb857d"
+        }
+
+
+### Get an attachment [GET /emails/{id}/attachments/{attachmentId}]
++ Parameters
+    + attachmentId: `238515b6-9a2f-4797-aed6-e7d36a7df430` (string, required) - ID of the attachment
+
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (mixed)
+
+
+### Delete an email [DELETE /emails/{id}]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+
+### Favorite an email [POST /emails/{id}/favorites]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+### Unfavorite an email [DELETE /emails/{id}/favorites]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+
+
+## Statistics Resource [/statistics]
+
+### List of statistics [GET]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+    + Attributes
+        + data (array[Statistic])
+        + meta (MetaStatistic)
+
+
+
+## Automations Resource [/automations]
+
+Contact the support to activate the automation feature.
+
+### List of automations [GET]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+    + Attributes
+        + data (array[Automation])
+
+### Create an automation [POST /automations]
++ Attributes
+    + title: `Save pdf invoices` (string) - Title of the automation
+    + action_url: `https://example.com/webhooks/save-pdf-invoices` (string) - URL that will be called
+    + sender: `shop@example.com` (string, optional) - Sender that should match
+    + inbox: `claire@example.com` (string, optional) - Inbox that should match
+    + subject: `New invoice` (string, optional) - Subject that should match
+    + has_attachments: `true` (boolean, optional) - Email should have at least one attachment
+    + action_secret_token: `SECRET12345$` (string) - Use this token to validate received payloads
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+### Update an automation [PUT /automations/{id}]
++ Attributes
+    + title: `Save pdf invoices` (string) - Title of the automation
+    + action_url: `https://example.com/webhooks/save-pdf-invoices` (string) - URL that will be called
+    + sender: `shop@example.com` (string, optional) - Sender that should match
+    + inbox: `claire@example.com` (string, optional) - Inbox that should match
+    + subject: `New invoice` (string, optional) - Subject that should match
+    + has_attachments: `true` (boolean, optional) - Email should have at least one attachment
+    + action_secret_token: `SECRET12345$` (string) - Use this token to validate received payloads
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+### Delete an automation [DELETE /automations/{id}]
++ Request
+
+    + Headers
+
+            Accept: application/vnd.mailcare.v1+json
+
++ Response 200 (application/vnd.mailcare.v1+json)
+
+## Webhooks received  [/webhooks/save-pdf-invoices]
+
+This webhook will be called only if the automation defined above match all the filters for a new email received.
+
+### Automation Webhook [POST]
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mailcare.v1+json
+            X-MailCare-Title: Save pdf invoices
+            X-MailCare-Subject: HIT
+            X-MailCare-Sender: HIT
+            X-MailCare-Inbox: HIT
+            X-MailCare-Has-Attachments: HIT
+            X-MailCare-Secret-Token: SECRET12345$
+
++ Response 200 (application/vnd.mailcare.v1+json)
+    + Attributes
+        + data (Email)

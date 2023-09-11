@@ -1,0 +1,71 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Exo+2:500|Roboto);
+
+// Icons
+@import url(https://use.fontawesome.com/releases/v5.4.1/css/all.css);
+
+// Bulma
+
+
+$black:        #000a14;
+$black-bis:    #001124;
+$black-ter:    #002347;
+
+$grey-darker:  #253341;
+$grey-dark:    #2e3f52;
+$grey:         #607285;
+$grey-light:   #a9b4c1;
+$grey-lighter: #d6dbe1;
+
+@import "~bulma/sass/utilities/initial-variables.sass";
+
+$primary: #e65722;
+
+$family-primary: 'Roboto', sans-serif;
+$link: $primary;
+$body-size: 1.25rem;
+
+$navbar-height: 4rem;
+$navbar-item-img-max-height: 4rem;
+
+@import "~bulma";
+// @import "~bulma/sass/utilities/functions.sass";
+// @import "~bulma/sass/utilities/derived-variables.sass";
+// @import "~bulma/sass/utilities/animations.sass";
+// @import "~bulma/sass/utilities/mixins.sass";
+// @import "~bulma/sass/utilities/controls.sass";
+
+// @import "~bulma/sass/base/_all.sass";
+// @import "~bulma/sass/form/_all.sass";
+
+// @import "~bulma/sass/elements/button.sass";
+// @import "~bulma/sass/elements/container.sass";
+// @import "~bulma/sass/elements/icon.sass";
+// @import "~bulma/sass/elements/table.sass";
+// @import "~bulma/sass/elements/tag.sass";
+// @import "~bulma/sass/elements/title.sass";
+// @import "~bulma/sass/elements/notification.sass";
+// @import "~bulma/sass/elements/other.sass";
+
+// @import "~bulma/sass/components/card.sass";
+// @import "~bulma/sass/components/level.sass";
+// @import "~bulma/sass/components/message.sass";
+// @import "~bulma/sass/components/navbar.sass";
+// @import "~bulma/sass/components/pagination.sass";
+// @import "~bulma/sass/components/panel.sass";
+// @import "~bulma/sass/components/tabs.sass";
+
+// @import "~bulma/sass/layout/section.sass";
+// @import "~bulma/sass/layout/footer.sass";
+
+// @import "~bulma/sass/grid/columns.sass";
+
+
+.navbar-item {
+	font-family: 'Exo 2', sans-serif;
+}
+
+.level-left {
+  flex-shrink: 1;
+}

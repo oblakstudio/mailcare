@@ -1,0 +1,24 @@
+
+vendor
+.env*
+.env
+.gitattributes
+.gitignore
+.gitlab-ci.yml
+apiary.apib
+LICENSE
+phpunit*
+readme.md
+server.php
+.releaserc
+
+# folders
+.github
+.git
+tests
+.ddev
+**/node_modules
+public/css
+public/js
+bootstrap/cachecd 
+storage

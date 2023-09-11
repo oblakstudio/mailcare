@@ -1,0 +1,27 @@
+services:
+  mailcatcher:
+    container_name: ddev-mailcare-mailcatcher
+    image: mailcare:latest
+    environment:
+      MAILCARE_DOMAIN: mailcare.ddev.site
+      VIRTUAL_HOST: $DDEV_HOSTNAME
+      HTTP_EXPOSE: 1079:80
+      HTTPS_EXPOSE: 1080:80
+    volumes:
+      - './mailcare.env:/mailcare/.env'
+      - mailcatcher:/mailcare/storage
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - default
+      - ddev_default
+
+volumes:
+  mailcatcher:
+    name: ddev-${DDEV_SITENAME}-mailcatcher
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
