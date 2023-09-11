@@ -1,5 +1,5 @@
 #Node.js build stage
-FROM node:16-alpine as node
+FROM node:18-alpine as node
 
 # Only copy package.json and package-lock.json first to leverage Docker cache
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN npm ci
 COPY . .
 RUN npm run production
 
-FROM debian:bookworm-slim as base
+FROM debian:bullseye-slim as base
 
 LABEL org.opencontainers.image.source="https://github.com/oblakstudio/mailcare" \
     org.opencontainers.image.authors="Oblak Studio <support@oblak.studio>" \
