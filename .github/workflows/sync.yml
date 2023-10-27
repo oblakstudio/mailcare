@@ -20,11 +20,11 @@ jobs:
     - name: Checkout GitHub repository
       uses: actions/checkout@v2
       with:
-        repository: lazarkov/mailcare
+        repository: lazarivkovic/mailcare
         ref: actions
 
     - name: Sync changes
       run: |
-        git fetch origin master:gitlab_master
-        git rebase gitlab_master
+        git fetch origin master:actions
+        git rebase actions
       continue-on-error: false
