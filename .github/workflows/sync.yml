@@ -11,26 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout GitLab repository
-      run: |
-        git clone https://gitlab.com/mailcare/mailcare.git
-        cd mailcare
-        git checkout master
-        git fetch
-        git pull
-        cd ..
-      continue-on-error: false
-
     - name: Checkout GitHub repository
       uses: actions/checkout@v2
       with:
-        repository: lazarivkovic/mailcare
         ref: actions
 
-    - name: Sync changes
+    - name: Merge changes from GitLab
       run: |
+        git remote add gitlab https://gitlab.com/mailcare/mailcare.git
+        git fetch gitlab master
         git checkout actions
-        git merge master --no-commit
+        git merge gitlab/master --no-commit
         git commit -m "Sync with GitLab"
-        git push origin actions
-      continue-on-error: false
+        git push
+      continue-on-error: true
