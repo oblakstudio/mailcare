@@ -1,7 +1,6 @@
 name: GitLab to GitHub Sync
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - master
@@ -12,39 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout GitLab repository
+      run: |
+        git clone https://gitlab.com/mailcare/mailcare.git
+        cd mailcare
+        git checkout master
+        cd ..
+      continue-on-error: false
+
     - name: Checkout GitHub repository
       uses: actions/checkout@v2
       with:
         repository: lazarivkovic/mailcare
         ref: actions
 
-    - name: Clone GitLab repository
-      run: |
-        git clone https://gitlab.com/mailcare/mailcare.git
-        cd mailcare
-      continue-on-error: false
-
     - name: Sync changes
       run: |
-        cd mailcare
-        git checkout master
-        git pull
-        cd ..
         rsync -a mailcare/ lazarivkovic/mailcare/
       continue-on-error: false
 
     - name: Push changes to GitHub
       run: |
         cd lazarivkovic/mailcare
-        git checkout -b actions
         git add .
         git commit -m "Sync with GitLab"
         git push origin actions
-
-    # - name: Create GitHub release
-    #   if: success()
-    #   run: |
-    #     # Replace with your release creation commands
-    #     # For example:
-    #     # git tag -a v1.0 -m "Release 1.0"
-    #     # git push origin v1.0
+      continue-on-error: false
