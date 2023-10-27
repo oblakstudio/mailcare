@@ -1,0 +1,27 @@
+name: Sync (Release)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout GitLab repository
+      uses: actions/checkout@v2
+      with:
+        repository: mailcare/mailcare
+        ref: master
+
+    - name: Checkout GitHub repository
+      uses: actions/checkout@v2
+      with:
+        repository: lazarkov/mailcare
+        ref: actions
+
+    - name: Sync changes
+      run: |
+        git fetch origin master:gitlab_master
+        git rebase gitlab_master
+      continue-on-error: false
