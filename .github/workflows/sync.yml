@@ -30,7 +30,6 @@ jobs:
     - name: Sync changes
       run: |
         git checkout actions
-        git pull origin actions
         git merge master --no-commit
         git commit -m "Sync with GitLab"
         git push origin actions
