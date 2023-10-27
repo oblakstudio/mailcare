@@ -16,6 +16,8 @@ jobs:
         git clone https://gitlab.com/mailcare/mailcare.git
         cd mailcare
         git checkout master
+        git fetch
+        git pull
         cd ..
       continue-on-error: false
 
@@ -27,13 +29,9 @@ jobs:
 
     - name: Sync changes
       run: |
-        rsync -a mailcare/ lazarivkovic/mailcare/
-      continue-on-error: false
-
-    - name: Push changes to GitHub
-      run: |
-        cd lazarivkovic/mailcare
-        git add .
+        git checkout -b actions
+        git pull origin actions
+        git merge master --no-commit
         git commit -m "Sync with GitLab"
         git push origin actions
       continue-on-error: false
