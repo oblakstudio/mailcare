@@ -13,18 +13,18 @@ sed -i "/^http {/a \    proxy_temp_path /tmp/proxy_temp;\n    client_body_temp_p
 mkdir -p /var/cache/nginx
 
 # owner perm
-chown -R $NUID:0 /var/cache/nginx
+chown -R "$NUID":0 /var/cache/nginx
 chmod -R g+w /var/cache/nginx
-chown -R $NUID:0 /etc/nginx
+chown -R "$NUID":0 /etc/nginx
 chmod -R g+w /etc/nginx
 
-chown -h $NUID:0 /var/log/nginx/access.log
-chown -h $NUID:0 /var/log/nginx/error.log
-chown -R $NUID:0 /var/log/nginx
+chown -h "$NUID":0 /var/log/nginx/access.log
+chown -h "$NUID":0 /var/log/nginx/error.log
+chown -R "$NUID":0 /var/log/nginx
 
 # user
-groupadd --system --gid $NGID nginx || true
-useradd --system --gid nginx --no-create-home --home /nonexistent --comment "nginx user" --shell /bin/false --uid $NUID nginx || true
+groupadd --system --gid "$NGID" nginx || true
+useradd --system --gid nginx --no-create-home --home /nonexistent --comment "nginx user" --shell /bin/false --uid "$NUID" nginx || true
 
 # clean
 rm -rf /etc/nginx/sites-enabled/*
