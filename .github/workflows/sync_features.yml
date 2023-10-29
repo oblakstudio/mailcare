@@ -1,0 +1,17 @@
+name: Sync Features from Source Repo Mailcare
+
+on:
+  schedule:
+    - cron: '0 0 */14 * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Sync Script
+      run: |
+        ./sync_features.sh

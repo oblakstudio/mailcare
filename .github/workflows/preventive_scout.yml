@@ -1,0 +1,32 @@
+name: Preventive Docker Scout Scan
+
+# on:
+#   workflow_run:
+#     workflows: ["Docker builds"]
+#     types:
+#       - completed
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-action@v2
+
+    - name: Download Docker image
+      run: docker pull oblakstudio/mailcare:latest
+
+    - name: Docker scout
+      uses: docker/scout-action@v1
+      with:
+        command: cves,recommendations
+        image: oblakstudio/mailcare:latest
+        only-severities: critical,high
+        summary: true
