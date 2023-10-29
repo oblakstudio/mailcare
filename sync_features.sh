@@ -8,12 +8,15 @@ destination_dir="src"
 
 curl -L "$github_url" | tar xvz --strip-components=1 -C "$temp_dir"
 
-rsync -a --exclude='composer.json' --exclude='composer.lock' --exclude='package-lock.json' --exclude='package.json' --exclude='README.md' --exclude='.github/' --update --ignore-existing "$temp_dir/" "$destination_dir/"
+rsync -a --exclude='.github/' "$temp_dir/" "$destination_dir/"
 
-git add .
-git commit -m "Sync features from source repo mailcare"
-git push origin master
+sed -i "s/\$proxies;/\$proxies = '*';/" src/app/Http/Middleware/TrustProxies.php
+sed -i "s/\\\$middleware = \\[/\\\$middleware = \\[\\n\\t\\t\\\\App\\\\Http\\\\Middleware\\\\TrustProxies::class,/g" src/app/Http/Kernel.php
 
-rm -r "$temp_dir"
+# git add .
+# git commit -m "Sync features from source repo mailcare"
+# git push origin master
 
-echo "Done"
+# rm -r "$temp_dir"
+
+# echo "Done"

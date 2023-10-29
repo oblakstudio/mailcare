@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 abstract class Filters
 {
     protected $request;
+
     protected $builder;
 
     public function __construct(Request $request)

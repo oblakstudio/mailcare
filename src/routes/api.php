@@ -1,6 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AttachmentsController;
+use App\Http\Controllers\AutomationsController;
+use App\Http\Controllers\EmailsController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\StatisticsController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,22 +19,21 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('mailcare.auth')->group(function () {
+    Route::resource('emails', EmailsController::class);
 
-    Route::resource('emails', 'EmailsController');
+    Route::post('emails/{email}/favorites', [FavoritesController::class, 'store']);
+    Route::delete('emails/{email}/favorites', [FavoritesController::class, 'destroy']);
 
-    Route::post('emails/{email}/favorites', 'FavoritesController@store');
-    Route::delete('emails/{email}/favorites', 'FavoritesController@destroy');
+    Route::get('statistics', [StatisticsController::class, 'index']);
 
-    Route::get('statistics', 'StatisticsController@index');
+    Route::get('emails/{email}/attachments/{attachmentId}', [AttachmentsController::class, 'show']);
 
-    Route::get('emails/{email}/attachments/{attachmentId}', 'AttachmentsController@show');
-
-    Route::get('automations', 'AutomationsController@index')
+    Route::get('automations', [AutomationsController::class, 'index'])
         ->middleware('mailcare.config:automations');
-    Route::post('automations', 'AutomationsController@store')
+    Route::post('automations', [AutomationsController::class, 'store'])
         ->middleware('mailcare.config:automations');
-    Route::put('automations/{automation}', 'AutomationsController@update')
+    Route::put('automations/{automation}', [AutomationsController::class, 'update'])
         ->middleware('mailcare.config:automations');
-    Route::delete('automations/{automation}', 'AutomationsController@destroy')
+    Route::delete('automations/{automation}', [AutomationsController::class, 'destroy'])
         ->middleware('mailcare.config:automations');
 });

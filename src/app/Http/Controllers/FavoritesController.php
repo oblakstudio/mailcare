@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Email;
 
 class FavoritesController extends Controller
@@ -19,7 +18,7 @@ class FavoritesController extends Controller
 
     public function destroy(Email $email)
     {
-        if (!$email->favorite) {
+        if (! $email->favorite) {
             return;
         }
 

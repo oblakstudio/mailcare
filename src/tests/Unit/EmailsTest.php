@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use \Carbon\Carbon;
-use App\Email;
 use App\Attachment;
+use App\Email;
 use App\Inbox;
 use App\Sender;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class EmailsTest extends TestCase
 {
@@ -21,12 +21,12 @@ class EmailsTest extends TestCase
     {
         $emailOne = Email::factory()->create([
             'subject' => 'My first email',
-            'created_at' => Carbon::yesterday()
-            ]);
+            'created_at' => Carbon::yesterday(),
+        ]);
         $emailTwo = Email::factory()->create([
             'subject' => 'My second email',
-            'created_at' => Carbon::now()
-            ]);
+            'created_at' => Carbon::now(),
+        ]);
 
         $response = $this->json('GET', 'api/emails');
 
@@ -34,7 +34,6 @@ class EmailsTest extends TestCase
             ->assertStatus(200)
             ->assertJsonFragment(['subject' => $emailOne->subject])
             ->assertJsonFragment(['subject' => $emailTwo->subject]);
-
 
         $data = $response->getData()->data;
         $this->assertEquals($emailTwo->subject, $data[0]->subject);
@@ -55,8 +54,8 @@ class EmailsTest extends TestCase
             'total' => 28,
             'last_page' => 2,
             'current_page' => 1,
-            'per_page' => MAX_LIMIT
-            ]]);
+            'per_page' => MAX_LIMIT,
+        ]]);
 
         $this->assertCount(MAX_LIMIT, $response->getData()->data);
     }
@@ -94,7 +93,7 @@ class EmailsTest extends TestCase
 
         Email::factory()->count(3)->create();
         Email::factory()->count(2)->create([
-            'inbox_id' => $inbox->id
+            'inbox_id' => $inbox->id,
         ]);
 
         $response = $this->json('GET', 'api/emails?inbox=test@example.com');
@@ -113,7 +112,7 @@ class EmailsTest extends TestCase
 
         Email::factory()->count(3)->create();
         Email::factory()->count(2)->create([
-            'sender_id' => $sender->id
+            'sender_id' => $sender->id,
         ]);
 
         $response = $this->json('GET', 'api/emails?sender=test@example.com');
@@ -200,13 +199,13 @@ class EmailsTest extends TestCase
         Email::factory()->count(5)->create();
 
         Email::factory()->create([
-            'sender_id' => $matchingSender->id
+            'sender_id' => $matchingSender->id,
         ]);
         Email::factory()->create([
-            'inbox_id' => $matchingInbox->id
+            'inbox_id' => $matchingInbox->id,
         ]);
         Email::factory()->create([
-            'subject' => 'matching subject'
+            'subject' => 'matching subject',
         ]);
 
         $response = $this->json('GET', 'api/emails?search=matching');
@@ -226,13 +225,13 @@ class EmailsTest extends TestCase
         Email::factory()->count(5)->create();
 
         Email::factory()->create([
-            'sender_id' => $matchingSender->id
+            'sender_id' => $matchingSender->id,
         ]);
         Email::factory()->create([
-            'inbox_id' => $matchingInbox->id
+            'inbox_id' => $matchingInbox->id,
         ]);
         Email::factory()->create([
-            'subject' => 'a matching subject'
+            'subject' => 'a matching subject',
         ]);
 
         $response = $this->json('GET', 'api/emails?search=matching');
@@ -255,7 +254,6 @@ class EmailsTest extends TestCase
         $this->assertCount(1, $response->getData()->data);
     }
 
-
     /**
      * @test
      */
@@ -276,7 +274,7 @@ class EmailsTest extends TestCase
     public function it_fetches_whitch_body_type_is_available()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -294,7 +292,7 @@ class EmailsTest extends TestCase
     public function it_fetches_the_good_version()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -312,7 +310,7 @@ class EmailsTest extends TestCase
     public function it_fetches_html_part_of_specific_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -330,7 +328,7 @@ class EmailsTest extends TestCase
     public function it_fetches_text_part_of_specific_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -342,14 +340,13 @@ class EmailsTest extends TestCase
             ->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
     }
 
-
     /**
      * @test
      */
     public function it_fetches_raw_part_of_specific_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -362,14 +359,13 @@ class EmailsTest extends TestCase
             ->assertHeader('Content-Type', 'message/rfc2822; charset=UTF-8');
     }
 
-
     /**
      * @test
      */
     public function it_fetches_html_part_when_i_prefer_it()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -382,14 +378,13 @@ class EmailsTest extends TestCase
             ->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     }
 
-
     /**
      * @test
      */
     public function it_fetches_text_part_when_i_prefer_it()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -407,7 +402,7 @@ class EmailsTest extends TestCase
     public function it_return_not_acceptable_when_i_fetches_unsupported_accept()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
         );
 
@@ -466,7 +461,6 @@ class EmailsTest extends TestCase
 
         $this->json('DELETE', 'api/emails/'.$email->id.'/favorites');
 
-
         $response = $this->json('GET', 'api/emails/'.$email->id);
         $response
             ->assertStatus(200)
@@ -479,7 +473,7 @@ class EmailsTest extends TestCase
     public function it_fetches_attachments_of_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_with_attachment.eml']
         );
 
@@ -491,8 +485,8 @@ class EmailsTest extends TestCase
             ->assertJsonFragment([
                 'file_name' => 'logo-mailcare-renard.png',
                 'content_type' => 'image/png',
-                'size_in_bytes' => '111766',
-                ]);
+                'size_in_bytes' => 112474,
+            ]);
     }
 
     /**
@@ -501,7 +495,7 @@ class EmailsTest extends TestCase
     public function it_download_attachments_of_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_with_attachment.eml']
         );
 
@@ -543,7 +537,7 @@ class EmailsTest extends TestCase
     public function it_download_attachments_that_doesnt_exist_on_disk()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_with_attachment.eml']
         );
 

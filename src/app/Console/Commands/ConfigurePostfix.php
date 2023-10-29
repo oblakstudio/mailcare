@@ -21,6 +21,7 @@ class ConfigurePostfix extends Command
 
         if ($this->input->isInteractive() and ! $confirmation) {
             $this->error('Aborting!');
+
             return;
         }
 
@@ -36,11 +37,12 @@ class ConfigurePostfix extends Command
 
     public function configureMainConfigFile($configDirectory, $newDomain)
     {
-        $mainConfigPath = Str::finish($configDirectory, '/') . 'main.cf';
+        $mainConfigPath = Str::finish($configDirectory, '/').'main.cf';
         $this->info("Configure $mainConfigPath");
 
         if (! file_exists($mainConfigPath)) {
-            $this->error("The config file does not exists.");
+            $this->error('The config file does not exists.');
+
             return;
         }
 
@@ -49,6 +51,7 @@ class ConfigurePostfix extends Command
 
         if (! $previousLine) {
             $this->error("Didn't find the key 'myhostname' in your configuration file.");
+
             return;
         }
 
@@ -56,23 +59,24 @@ class ConfigurePostfix extends Command
         $this->line("from    $previousLine");
         $this->line("to      $newLine");
 
-        $smtpdRecipientRestrictions = "smtpd_recipient_restrictions = permit_mynetworks, reject_unauth_destination";
-        $localRecipients = "local_recipient_maps =";
+        $smtpdRecipientRestrictions = 'smtpd_recipient_restrictions = permit_mynetworks, reject_unauth_destination';
+        $localRecipients = 'local_recipient_maps =';
         file_put_contents($mainConfigPath, "\n$smtpdRecipientRestrictions\n", FILE_APPEND);
         file_put_contents($mainConfigPath, "$localRecipients\n", FILE_APPEND);
 
-        $this->line("2. added some more configuration.");
+        $this->line('2. added some more configuration.');
         $this->line("        $smtpdRecipientRestrictions");
         $this->line("        $localRecipients");
     }
 
     public function configureMasterConfigFile($configDirectory)
     {
-        $masterConfigPath = Str::finish($configDirectory, '/') . 'master.cf';
+        $masterConfigPath = Str::finish($configDirectory, '/').'master.cf';
         $this->info("\nConfigure $masterConfigPath");
 
         if (! file_exists($masterConfigPath)) {
-            $this->error("The config file does not exists..");
+            $this->error('The config file does not exists..');
+
             return;
         }
 
@@ -89,17 +93,18 @@ class ConfigurePostfix extends Command
         $newLine = "mailcare unix - n n - - pipe flags=F user=$user argv={$command}";
         file_put_contents($masterConfigPath, "\n$newLine\n", FILE_APPEND);
 
-        $this->line("1. hook created.");
+        $this->line('1. hook created.');
         $this->line("        $newLine");
     }
 
     private function activateWebhook($masterConfigPath)
     {
-        $newLine = "smtp inet n - - - - smtpd -o content_filter=mailcare:dummy";
+        $newLine = 'smtp inet n - - - - smtpd -o content_filter=mailcare:dummy';
         $previousLine = $this->editLine($masterConfigPath, '/^smtp(\s+)inet(.*)$/m', $newLine);
 
         if (! $previousLine) {
             $this->error("Didn't find the key 'smtp inet' in your configuration file..");
+
             return;
         }
 
@@ -119,7 +124,7 @@ class ConfigurePostfix extends Command
             $this->line("1. using 'service postfix reload'");
             shell_exec('service postfix reload');
         } else {
-            $this->error("Neither systemctl nor service found. Ignoring Postfix reload.");
+            $this->error('Neither systemctl nor service found. Ignoring Postfix reload.');
         }
     }
 
@@ -145,6 +150,7 @@ class ConfigurePostfix extends Command
     private function commandExists($command)
     {
         $returnCode = shell_exec("command -v $command >/dev/null 2>&1; printf $?");
+
         return $returnCode === '0';
     }
 }

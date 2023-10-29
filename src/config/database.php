@@ -38,7 +38,7 @@ return [
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
         ],
-        
+
         'sqlite_testing' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database_testing.sqlite')),
@@ -68,7 +68,7 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
-            'schema' => 'public',
+            'search_path' => 'public',
             'sslmode' => 'prefer',
         ],
 

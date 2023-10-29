@@ -2,11 +2,10 @@
 
 namespace App\Mail;
 
+use App\Email;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Email;
 use PhpMimeMailParser\Parser;
 
 class ForwardEmail extends Mailable
@@ -14,6 +13,7 @@ class ForwardEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $email;
+
     private $parser;
 
     /**
@@ -40,10 +40,10 @@ class ForwardEmail extends Mailable
             ->from($this->email->inbox->email)
             ->subject($this->parser->getHeader('subject'))
             ->view('emails.forward.html')->with([
-                'html' => $this->parser->getMessageBody('html')
+                'html' => $this->parser->getMessageBody('html'),
             ])
             ->text('emails.forward.text')->with([
-                'text' => $this->parser->getMessageBody('text')
+                'text' => $this->parser->getMessageBody('text'),
             ]);
 
         foreach ($this->parser->getAttachments() as $attachment) {
@@ -53,6 +53,7 @@ class ForwardEmail extends Mailable
                 ['mime' => $attachment->getContentType()]
             );
         }
+
         return $build;
     }
 }

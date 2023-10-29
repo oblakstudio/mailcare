@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Carbon\Carbon;
 use App\Email;
 use App\Inbox;
 use App\Statistic;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class BuildStatistics extends Command
 {
@@ -41,7 +41,6 @@ class BuildStatistics extends Command
      */
     public function handle()
     {
-
         if ($this->argument('date')) {
             $date = (new Carbon($this->argument('date')))->toDateString();
         } else {
@@ -65,8 +64,8 @@ class BuildStatistics extends Command
             ]
         );
 
-
         $this->info("Statistics builded successfully for $date");
+
         return 0;
     }
 }

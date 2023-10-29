@@ -2,12 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuids;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Email extends Model
 {
@@ -15,6 +15,7 @@ class Email extends Model
     use HasFactory;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $casts = [
@@ -40,22 +41,22 @@ class Email extends Model
 
     public function sender()
     {
-        return $this->belongsTo('App\Sender');
+        return $this->belongsTo(\App\Sender::class);
     }
 
     public function inbox()
     {
-        return $this->belongsTo('App\Inbox');
+        return $this->belongsTo(\App\Inbox::class);
     }
 
     public function attachments()
     {
-        return $this->hasMany('App\Attachment');
+        return $this->hasMany(\App\Attachment::class);
     }
 
     public function path()
     {
-        return 'emails/' . $this->created_at->format('Y/m/d/') . $this->id;
+        return 'emails/'.$this->created_at->format('Y/m/d/').$this->id;
     }
 
     public function fullPath()

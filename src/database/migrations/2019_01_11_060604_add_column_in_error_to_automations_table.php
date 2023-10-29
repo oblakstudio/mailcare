@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddColumnInErrorToAutomationsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -26,7 +26,7 @@ class AddColumnInErrorToAutomationsTable extends Migration
     public function down()
     {
         Schema::table('automations', function (Blueprint $table) {
-             $table->dropColumn('in_error');
+            $table->dropColumn('in_error');
         });
     }
-}
+};

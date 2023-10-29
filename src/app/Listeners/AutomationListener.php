@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\EmailReceived;
 use App\Automation;
+use App\Events\EmailReceived;
 use App\Http\Resources\EmailResource;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ForwardEmail;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class AutomationListener
 {
@@ -19,7 +19,7 @@ class AutomationListener
      */
     public function handle(EmailReceived $event)
     {
-        if (!config('mailcare.automations')) {
+        if (! config('mailcare.automations')) {
             return;
         }
 
@@ -30,21 +30,21 @@ class AutomationListener
             $headers = [];
             $headers['X-MailCare-Title'] = $automation->title;
 
-            if (!empty($automation->subject)) {
+            if (! empty($automation->subject)) {
                 if (preg_match('#'.$automation->subject.'#i', $event->email->subject)) {
                     $headers['X-MailCare-Subject'] = 'HIT';
                 } else {
                     continue;
                 }
             }
-            if (!empty($automation->sender)) {
+            if (! empty($automation->sender)) {
                 if (preg_match('#'.$automation->sender.'#i', $event->email->sender->email)) {
                     $headers['X-MailCare-Sender'] = 'HIT';
                 } else {
                     continue;
                 }
             }
-            if (!empty($automation->inbox)) {
+            if (! empty($automation->inbox)) {
                 if (preg_match('#'.$automation->inbox.'#i', $event->email->inbox->email)) {
                     $headers['X-MailCare-Inbox'] = 'HIT';
                 } else {
@@ -67,7 +67,7 @@ class AutomationListener
                 $actionDeleteEmail = true;
             }
 
-            if (config('mailcare.forward') && !empty($automation->action_email)) {
+            if (config('mailcare.forward') && ! empty($automation->action_email)) {
                 try {
                     Mail::to($automation->action_email)->send(new ForwardEmail($event->email));
                     $automation->in_error = false;

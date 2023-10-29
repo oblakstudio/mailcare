@@ -25,7 +25,7 @@ class Forward implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!config('mailcare.forward') && !empty($value)) {
+        if (! config('mailcare.forward') && ! empty($value)) {
             return false;
         }
 

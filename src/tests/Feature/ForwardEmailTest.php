@@ -2,25 +2,23 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Automation;
-use App\User;
-use App\Email;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ForwardEmail;
+use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class ForwardEmailTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         config([
             'mailcare.auth' => true,
-            'mailcare.automations' => true
+            'mailcare.automations' => true,
         ]);
 
         $user = User::factory()->create();

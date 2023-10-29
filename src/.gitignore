@@ -1,6 +1,7 @@
 /node_modules
 /public/storage
 /public/hot
+/public/build
 /storage/*.key
 /vendor
 /.idea
@@ -8,5 +9,3 @@ Homestead.json
 Homestead.yaml
 .env
 .phpunit.result.cache
-public/js
-public/css

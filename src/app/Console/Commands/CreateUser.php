@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
@@ -51,6 +51,7 @@ class CreateUser extends Command
         $user->save();
 
         $this->info("User {$user->name} created");
+
         return 0;
     }
 }

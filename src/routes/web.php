@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChangePasswordController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,9 +14,7 @@
 |
 */
 
-
 Route::middleware('mailcare.auth')->group(function () {
-
     Route::view('/', 'emails.index');
 
     Route::get('/inboxes/{email}', function ($email) {
@@ -23,16 +24,16 @@ Route::middleware('mailcare.auth')->group(function () {
     Route::get('/senders/{email}', function ($email) {
         return view('senders.index')->withEmail($email);
     });
-    
+
     Route::get('/emails/{id}', function ($id) {
         return view('emails.show')->withId($id);
     });
 
     Route::view('/statistics', 'statistics.index');
     Route::view('/automations', 'automations.index')->middleware('mailcare.config:automations');
-    
-    Route::get('/change-password', 'ChangePasswordController@showChangePasswordForm')
+
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])
         ->middleware('mailcare.config:auth');
-    Route::post('/change-password', 'ChangePasswordController@changePassword')
+    Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])
         ->middleware('mailcare.config:auth');
 });

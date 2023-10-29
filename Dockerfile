@@ -8,7 +8,7 @@ RUN npm ci
 
 # Copy the rest of the code and build
 COPY ./src/ /app/
-RUN npm run production
+RUN npm run build
 
 # Base image
 FROM debian:bullseye-slim as base
@@ -37,20 +37,20 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=var-cache-apt-$TA
 RUN set -x \
     && apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
     nginx \
-    php8.0-cli \
-    php8.0-fpm \
-    php8.0-common \
-    php8.0-gd \
-    php8.0-mbstring \
-    php8.0-curl \
-    php8.0-dom \
-    php8.0-xml \
-    php8.0-bcmath \
-    php8.0-tokenizer \
-    php8.0-pdo \
-    php8.0-mysqlnd \
-    php8.0-zip \
-    php8.0-mailparse \
+    php8.2-cli \
+    php8.2-fpm \
+    php8.2-common \
+    php8.2-gd \
+    php8.2-mbstring \
+    php8.2-curl \
+    php8.2-dom \
+    php8.2-xml \
+    php8.2-bcmath \
+    php8.2-tokenizer \
+    php8.2-pdo \
+    php8.2-mysqlnd \
+    php8.2-zip \
+    php8.2-mailparse \
     postfix \
     tzdata \
     supervisor \
@@ -65,15 +65,17 @@ RUN set -x && \
     chmod +x /usr/local/bin/configure_nginx.sh && \
     sh ./usr/local/bin/configure_nginx.sh && \
     useradd -m -s /bin/bash -d /mailcare mailcare && usermod -aG nginx mailcare
+COPY ./docker/config/nginx/mailcare.conf /etc/nginx/sites-enabled/mailcare.conf
+
 
 # Copy PHP configuration files
-COPY ./docker/config/php/php-fpm.conf /etc/php/8.0/fpm/
-COPY ./docker/config/php/php.ini /etc/php/8.0/fpm/php.ini
+COPY ./docker/config/php/php-fpm.conf /etc/php/8.2/fpm/
+COPY ./docker/config/php/php.ini /etc/php/8.2/fpm/php.ini
 
 # PHP Stuff
-RUN phpenmod -v 8.0 mailparse && \
-    ln -s /dev/stdout /mailcare/php8.0-fpm.log && \
-    chown -h mailcare:mailcare /mailcare/php8.0-fpm.log
+RUN phpenmod -v 8.2 mailparse && \
+    ln -s /dev/stdout /mailcare/php8.2-fpm.log && \
+    chown -h mailcare:mailcare /mailcare/php8.2-fpm.log
 
 # Copy Composer from a previous stage
 COPY --from=composer /usr/bin/composer /usr/bin/composer

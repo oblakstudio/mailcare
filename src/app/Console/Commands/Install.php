@@ -49,6 +49,7 @@ class Install extends Command
         $this->clearCache();
 
         $this->goodbye();
+
         return 0;
     }
 
@@ -119,6 +120,7 @@ class Install extends Command
     {
         $question = new Question($question, 'null');
         $question->setHidden(true)->setHiddenFallback($fallback);
+
         return $this->output->askQuestion($question);
     }
 

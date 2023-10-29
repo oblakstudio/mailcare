@@ -2,15 +2,14 @@
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\Browser\Pages\ShowEmail;
 use App\Email;
-use Carbon\Carbon;
-use App\User;
-use App\Sender;
 use App\Inbox;
+use App\Sender;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Pages\ShowEmail;
+use Tests\DuskTestCase;
 
 class ShowEmailTest extends DuskTestCase
 {
@@ -19,9 +18,10 @@ class ShowEmailTest extends DuskTestCase
     public function testShowEmailWithoutAttachment()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_without_attachment.eml']
-        );
+        )->assertExitCode(0);
+
         $email = Email::first();
 
         $this->browse(function (Browser $browser) use ($email) {
@@ -31,19 +31,19 @@ class ShowEmailTest extends DuskTestCase
                     ->on(new ShowEmail($email))
                     ->assertSeeEmail()
                     ->waitFor('li.is-active[data-label="Html"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->assertSeeLink('mailcare.io')
                                 ->assertSourceHas('My name is <strong>vincent</strong>.');
                     })
                     ->clickLink('Text')
                     ->waitFor('li.is-active[data-label="Text"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->assertSee('Welcome to mailcare.io')
                                 ->assertSee('sorry no link in plain text');
                     })
                     ->clickLink('Raw')
                     ->waitFor('li.is-active[data-label="Raw"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->waitForText('Content-Transfer-Encoding')
                                 ->assertSee('sorry no link in plain text')
                                 ->assertSee('My name is <strong>vincent</strong>.', false)
@@ -55,9 +55,10 @@ class ShowEmailTest extends DuskTestCase
     public function testShowEmailWithAttachment()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_with_attachment.eml']
-        );
+        )->assertExitCode(0);
+        
         $email = Email::first();
 
         $this->browse(function (Browser $browser) use ($email) {
@@ -67,17 +68,17 @@ class ShowEmailTest extends DuskTestCase
                     ->on(new ShowEmail($email))
                     ->assertSeeEmail()
                     ->waitFor('li.is-active[data-label="Html"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->assertSourceHas('Please find attached the file you requested.<br>');
                     })
                     ->clickLink('Text')
                     ->waitFor('li.is-active[data-label="Text"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->assertSee('Please find attached the file you requested.');
                     })
                     ->clickLink('Raw')
                     ->waitFor('li.is-active[data-label="Raw"]')
-                    ->withinFrame('[name=iframe-body]', function($browser) {
+                    ->withinFrame('[name=iframe-body]', function ($browser) {
                         $browser->waitForText('logo-mailcare-renard.png')
                                 ->assertSee('Please find attached the file you requested.');
                     });
@@ -102,7 +103,6 @@ class ShowEmailTest extends DuskTestCase
                     ->assertSeeLink($emailTwo->subject)
                     ->assertDontSeeLink($emailOne->subject);
         });
-
     }
 
     public function testUnreadEmail()
@@ -122,7 +122,6 @@ class ShowEmailTest extends DuskTestCase
                     ->assertSeeLink($emailTwo->subject)
                     ->assertDontSeeLink($emailOne->subject);
         });
-
     }
 
     public function testFilterEmails()
@@ -142,7 +141,6 @@ class ShowEmailTest extends DuskTestCase
                     ->assertSeeLink($emailOne->subject)
                     ->assertSeeLink($emailTwo->subject);
         });
-
     }
 
     public function testStatistics()
@@ -151,16 +149,15 @@ class ShowEmailTest extends DuskTestCase
         $emailTwo = Email::factory()->create(['subject' => 'My second email']);
 
         $this->artisan(
-            'mailcare:build-statistics', 
+            'mailcare:build-statistics',
             ['date' => Carbon::now()->toDateString()]
         );
 
-        $this->browse(function (Browser $browser) use ($emailOne, $emailTwo) {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/statistics')
                     ->waitForText('EMAILS RECEIVED')
                     ->assertSee('2');
         });
-
     }
 
     public function testFilterBySender()
@@ -169,7 +166,7 @@ class ShowEmailTest extends DuskTestCase
 
         $emails = Email::factory()->count(2)->create();
         $emailFiltered = Email::factory()->create([
-            'sender_id' => $sender->id
+            'sender_id' => $sender->id,
         ]);
 
         $this->browse(function (Browser $browser) use ($emailFiltered) {
@@ -185,7 +182,6 @@ class ShowEmailTest extends DuskTestCase
                     ->assertSee('Filtered by sender')
                     ->assertSee($emailFiltered->sender->email);
         });
-
     }
 
     public function testFilterByInbox()
@@ -194,7 +190,7 @@ class ShowEmailTest extends DuskTestCase
 
         $emails = Email::factory()->create();
         $emailFiltered = Email::factory()->count(2)->create([
-            'inbox_id' => $inbox->id
+            'inbox_id' => $inbox->id,
         ])->first();
 
         $this->browse(function (Browser $browser) use ($emailFiltered) {
@@ -210,6 +206,5 @@ class ShowEmailTest extends DuskTestCase
                     ->assertSee('Filtered by inbox')
                     ->assertSee($emailFiltered->inbox->email);
         });
-
     }
 }

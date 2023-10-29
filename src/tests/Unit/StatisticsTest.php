@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\Statistic;
 use App\Email;
+use App\Statistic;
 use App\Traits\StorageForHuman;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class StatisticsTest extends TestCase
 {
@@ -93,7 +93,6 @@ class StatisticsTest extends TestCase
      */
     public function it_build_statistics_for_specific_date()
     {
-
         $email = Email::factory()->create();
         $email->delete();
 

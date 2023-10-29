@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Email;
 use App\Statistic;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Console\Command;
 
 class AutoDelete extends Command
 {
@@ -16,12 +15,11 @@ class AutoDelete extends Command
 
     public function handle()
     {
-        $this->line("--------------------------------------------------");
-        $this->line("AutoDelete command executed at ".Carbon::now());
+        $this->line('--------------------------------------------------');
+        $this->line('AutoDelete command executed at '.Carbon::now());
         $size = $this->getCalculatedSize();
 
         Email::where('favorite', false)->oldest()->chunkById(100, function ($emails) use ($size) {
-
             foreach ($emails as $email) {
                 if ($size <= 0) {
                     return false;
@@ -32,6 +30,7 @@ class AutoDelete extends Command
                 $this->line("$size deleted");
             }
         });
+
         return 0;
     }
 
@@ -48,7 +47,8 @@ class AutoDelete extends Command
         );
 
         if (empty($storageUsedPeriod1) || empty($storageUsedPeriod2)) {
-            $this->comment("Not enough periods to calculate");
+            $this->comment('Not enough periods to calculate');
+
             return 0;
         }
         $this->line("Storage used for period 1 ($storageUsedPeriod1) and for period 2 ($storageUsedPeriod2)");
@@ -63,11 +63,13 @@ class AutoDelete extends Command
         $delete = $this->getDiskFreeSpace() - $storageToDelete;
 
         if ($delete > 0) {
-            $this->comment("Final calculated size to delete: 0");
+            $this->comment('Final calculated size to delete: 0');
+
             return 0;
         }
 
         $this->info("Final calculated size to delete: $delete");
+
         return (int) $delete * -1;
     }
 
@@ -75,6 +77,7 @@ class AutoDelete extends Command
     {
         $diskFreeSpace = disk_free_space(storage_path());
         $this->line("Disk free space: $diskFreeSpace");
+
         return $diskFreeSpace;
     }
 }

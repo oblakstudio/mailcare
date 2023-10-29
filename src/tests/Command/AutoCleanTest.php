@@ -2,12 +2,12 @@
 
 namespace Tests\Command;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Email;
 use App\Attachment;
+use App\Email;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class AutoCleanTest extends TestCase
 {
@@ -20,10 +20,10 @@ class AutoCleanTest extends TestCase
     {
         $email = Email::factory()->create();
         $emailDeleted2MonthsAgo = Email::factory()->create([
-            'deleted_at' => Carbon::now()->subMonths(2)
+            'deleted_at' => Carbon::now()->subMonths(2),
         ]);
         $emailDeleted10DaysAgo = Email::factory()->create([
-            'deleted_at' => Carbon::now()->subDays(10)
+            'deleted_at' => Carbon::now()->subDays(10),
         ]);
 
         $this->assertTrue($email->exists);

@@ -2,12 +2,11 @@
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use App\Email;
-use Tests\Browser\Pages\ShowEmail;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\User;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Pages\ShowEmail;
+use Tests\DuskTestCase;
 
 class DeleteEmailTest extends DuskTestCase
 {
@@ -22,9 +21,9 @@ class DeleteEmailTest extends DuskTestCase
                     ->waitForText('1 emails')
                     ->assertSee($email->subject)
                     ->visit(new ShowEmail($email))
-            		->assertSeeEmail()
+                    ->assertSeeEmail()
                     ->delete()
-                    ->assertPathIs('/');;
+                    ->assertPathIs('/');
         });
     }
 }

@@ -2,21 +2,21 @@
 
 namespace Tests\Command;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Console\Commands\AutoDelete;
 use App\Email;
 use App\Statistic;
-use App\Console\Commands\AutoDelete;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AutoDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->delete = $this->mock(AutoDelete::class, function($mock){
+        $this->delete = $this->mock(AutoDelete::class, function ($mock) {
             $mock->shouldReceive('line')->andReturn(null);
             $mock->shouldReceive('comment')->andReturn(null);
             $mock->shouldReceive('info')->andReturn(null);
@@ -25,12 +25,12 @@ class AutoDeleteTest extends TestCase
 
     private function hasDiskFreeSpace($value)
     {
-    	$this->delete->shouldReceive(['getDiskFreeSpace' => $value]);
+        $this->delete->shouldReceive(['getDiskFreeSpace' => $value]);
     }
 
     private function hasCalculatedSize($value)
     {
-    	$this->delete->shouldReceive(['getCalculatedSize' => $value]);
+        $this->delete->shouldReceive(['getCalculatedSize' => $value]);
     }
 
     private function assertSizeToDeleteEquals($value)
@@ -43,7 +43,7 @@ class AutoDeleteTest extends TestCase
      */
     public function cmd_delete_only_if_necessary()
     {
-    	$this->hasCalculatedSize(0);
+        $this->hasCalculatedSize(0);
 
         Email::factory()->create();
 
@@ -59,15 +59,15 @@ class AutoDeleteTest extends TestCase
      */
     public function cmd_delete_by_oldest()
     {
-    	$this->hasCalculatedSize(10);
+        $this->hasCalculatedSize(10);
 
         $oldestEmail = Email::factory()->create([
             'created_at' => '2017-01-01',
-            'size_in_bytes' => 10
+            'size_in_bytes' => 10,
         ]);
         $email = Email::factory()->create([
             'created_at' => '2018-01-01',
-            'size_in_bytes' => 20
+            'size_in_bytes' => 20,
         ]);
 
         $this->assertCount(2, Email::all());
@@ -86,16 +86,16 @@ class AutoDeleteTest extends TestCase
      */
     public function cmd_never_delete_favorite()
     {
-    	$this->hasCalculatedSize(10);
+        $this->hasCalculatedSize(10);
 
         $favoriteEmail = Email::factory()->create([
             'created_at' => '2017-01-01',
             'favorite' => true,
-            'size_in_bytes' => 10
+            'size_in_bytes' => 10,
         ]);
         $email = Email::factory()->create([
             'created_at' => '2018-01-01',
-            'size_in_bytes' => 20
+            'size_in_bytes' => 20,
         ]);
 
         $this->assertCount(2, Email::all());
@@ -114,7 +114,7 @@ class AutoDeleteTest extends TestCase
      */
     public function cmd_delete_emails_when_storage_used_increase()
     {
-    	$this->hasDiskFreeSpace(30);
+        $this->hasDiskFreeSpace(30);
 
         Statistic::factory()->create([
             'emails_received' => 0,
@@ -132,13 +132,12 @@ class AutoDeleteTest extends TestCase
         $this->assertSizeToDeleteEquals(15);
     }
 
-
     /**
      * @test
      */
     public function cmd_delete_emails_when_storage_used_decrease()
     {
-    	$this->hasDiskFreeSpace(5);
+        $this->hasDiskFreeSpace(5);
 
         Statistic::factory()->create([
             'emails_received' => 0,
@@ -156,13 +155,12 @@ class AutoDeleteTest extends TestCase
         $this->assertSizeToDeleteEquals(20);
     }
 
-
     /**
      * @test
      */
     public function cmd_dont_delete_when_no_data_for_the_first_period()
     {
-    	$this->hasDiskFreeSpace(10);
+        $this->hasDiskFreeSpace(10);
 
         Statistic::factory()->create([
             'emails_received' => 0,
@@ -174,13 +172,12 @@ class AutoDeleteTest extends TestCase
         $this->assertSizeToDeleteEquals(0);
     }
 
-
     /**
      * @test
      */
     public function cmd_dont_delete_when_no_data_for_the_second_period()
     {
-    	$this->hasDiskFreeSpace(10);
+        $this->hasDiskFreeSpace(10);
 
         Statistic::factory()->create([
             'emails_received' => 0,
@@ -192,13 +189,12 @@ class AutoDeleteTest extends TestCase
         $this->assertSizeToDeleteEquals(0);
     }
 
-
     /**
      * @test
      */
     public function cmd_dont_delete_when_enough_free_space()
     {
-    	$this->hasDiskFreeSpace(150);
+        $this->hasDiskFreeSpace(150);
 
         Statistic::factory()->create([
             'emails_received' => 0,
@@ -216,13 +212,12 @@ class AutoDeleteTest extends TestCase
         $this->assertSizeToDeleteEquals(0);
     }
 
-
     /**
      * @test
      */
     public function cmd_should_calculate_the_emails_already_deleted()
     {
-    	$this->hasDiskFreeSpace(50);
+        $this->hasDiskFreeSpace(50);
 
         Statistic::factory()->create([
             'emails_received' => 0,

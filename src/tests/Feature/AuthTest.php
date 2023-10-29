@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
@@ -51,9 +51,9 @@ class AuthTest extends TestCase
         $this->assertEquals(true, config('mailcare.auth'));
         $response->assertStatus(401);
 
-
         $response = $this->actingAs($user)->json('GET', 'api/emails');
         $this->assertEquals(true, config('mailcare.auth'));
         $response->assertStatus(200);
     }
+    
 }

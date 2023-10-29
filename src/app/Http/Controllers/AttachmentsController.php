@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use PhpMimeMailParser\Parser;
 use App\Email;
-use App\Attachment;
+use PhpMimeMailParser\Parser;
 
 class AttachmentsController extends ApiController
 {
-
     public function show(Email $email, $attachmentId)
     {
         $attachment = $email->attachments()->findOrFail($attachmentId);
@@ -27,6 +24,7 @@ class AttachmentsController extends ApiController
         }
 
         $data = stream_get_contents($attachmentParsed->getStream());
+
         return response($data)->header('Content-Type', $attachmentParsed->getContentType());
     }
 }

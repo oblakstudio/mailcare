@@ -14,6 +14,7 @@ class ApiController extends Controller
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
+
         return $this;
     }
 
@@ -30,12 +31,12 @@ class ApiController extends Controller
     public function respondWithPagination($paginator, $data, $headers = [])
     {
         $data = array_merge($data, [
-             'paginator' => [
+            'paginator' => [
                 'total_count' => $paginator->total(),
                 'total_pages' => ceil($paginator->total() / $paginator->perPage()),
                 'current_page' => $paginator->currentPage(),
                 'limit' => $paginator->perPage(),
-             ]]);
+            ], ]);
 
         return $this->respond($data, $headers);
     }
@@ -46,7 +47,7 @@ class ApiController extends Controller
             'error' => [
                 'message' => $message,
                 'status_code' => $this->getStatusCode(),
-            ]
-            ]);
+            ],
+        ]);
     }
 }

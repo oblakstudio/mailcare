@@ -1,4 +1,3 @@
-import Vue from 'vue';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -6,7 +5,7 @@ import Vue from 'vue';
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import './bootstrap';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,5 +27,5 @@ Vue.component('automations', Automations);
 Vue.component('statistics', Statistics);
 
 const app = new Vue({
-  el: '#app',
+    el: '#app'
 });

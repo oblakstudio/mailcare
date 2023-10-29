@@ -2,11 +2,10 @@
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\Automations;
-use App\User;
+use Tests\DuskTestCase;
 
 class ForwardEmailTest extends DuskTestCase
 {
@@ -17,9 +16,9 @@ class ForwardEmailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Automations)
                     ->createWebhook()
-        			->waitForText('1 automations')
-        			->editWebhook()
-        			->waitForText('1 automations');
+                    ->waitForText('1 automations')
+                    ->editWebhook()
+                    ->waitForText('1 automations');
         });
     }
 
@@ -28,9 +27,9 @@ class ForwardEmailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Automations)
                     ->createForward()
-        			->waitForText('1 automations')
-        			->editForward()
-        			->waitForText('1 automations');
+                    ->waitForText('1 automations')
+                    ->editForward()
+                    ->waitForText('1 automations');
         });
     }
 }

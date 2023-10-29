@@ -18,7 +18,7 @@ $grey:         #607285;
 $grey-light:   #a9b4c1;
 $grey-lighter: #d6dbe1;
 
-@import "~bulma/sass/utilities/initial-variables.sass";
+@import "https://cdn.jsdelivr.net/npm/bulma@0.7.5/css/bulma.min.css";
 
 $primary: #e65722;
 
@@ -28,39 +28,6 @@ $body-size: 1.25rem;
 
 $navbar-height: 4rem;
 $navbar-item-img-max-height: 4rem;
-
-@import "~bulma";
-// @import "~bulma/sass/utilities/functions.sass";
-// @import "~bulma/sass/utilities/derived-variables.sass";
-// @import "~bulma/sass/utilities/animations.sass";
-// @import "~bulma/sass/utilities/mixins.sass";
-// @import "~bulma/sass/utilities/controls.sass";
-
-// @import "~bulma/sass/base/_all.sass";
-// @import "~bulma/sass/form/_all.sass";
-
-// @import "~bulma/sass/elements/button.sass";
-// @import "~bulma/sass/elements/container.sass";
-// @import "~bulma/sass/elements/icon.sass";
-// @import "~bulma/sass/elements/table.sass";
-// @import "~bulma/sass/elements/tag.sass";
-// @import "~bulma/sass/elements/title.sass";
-// @import "~bulma/sass/elements/notification.sass";
-// @import "~bulma/sass/elements/other.sass";
-
-// @import "~bulma/sass/components/card.sass";
-// @import "~bulma/sass/components/level.sass";
-// @import "~bulma/sass/components/message.sass";
-// @import "~bulma/sass/components/navbar.sass";
-// @import "~bulma/sass/components/pagination.sass";
-// @import "~bulma/sass/components/panel.sass";
-// @import "~bulma/sass/components/tabs.sass";
-
-// @import "~bulma/sass/layout/section.sass";
-// @import "~bulma/sass/layout/footer.sass";
-
-// @import "~bulma/sass/grid/columns.sass";
-
 
 .navbar-item {
 	font-family: 'Exo 2', sans-serif;

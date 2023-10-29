@@ -1,4 +1,4 @@
-image: chilio/laravel-dusk-ci:php-7.4
+image: chilio/laravel-dusk-ci:php-8.2
 
 stages:
   - test
@@ -6,7 +6,7 @@ stages:
 unit_test:
   stage: test
   script:
-    - apt-get update && apt-get install php7.4-mailparse
+    - apt-get update && apt-get install -y php8.2-mailparse
     - cp .env.example .env
     - composer install
     - php artisan key:generate
@@ -15,7 +15,7 @@ unit_test:
 test_coverage:
   stage: test
   script:
-    - apt-get update && apt-get install php7.4-mailparse
+    - apt-get update && apt-get install -y php8.2-mailparse
     - cp .env.example .env
     - composer install
     - php artisan key:generate
@@ -24,7 +24,7 @@ test_coverage:
 test_coding_standard:
   stage: test
   script:
-    - apt-get update && apt-get install php7.4-mailparse
+    - apt-get update && apt-get install -y php8.2-mailparse
     - cp .env.example .env
     - composer install
     - vendor/bin/phpcs . --ignore="*/vendor/*,*/node_modules/*,*/public/*,*/database/*,*/autoload.php,*/cache/*,*/*.blade.php,*/storage/*,*/tests/*" --standard=PSR2
@@ -41,11 +41,13 @@ browser_test:
   services:
     - mysql:5.7
   script:
-    - apt-get update && apt-get install php7.4-mailparse
+    - apt-get update && apt-get install -y php8.2-mailparse
     - cp .env.dusk.ci .env
     - composer install
     - configure-laravel
     - start-nginx-ci-project
+    - php artisan mailcare:email-receive tests/storage/email_with_attachment.eml
+    - chmod -R 777 storage/app/emails/
     - php artisan dusk --colors --env=dusk.ci
 
   artifacts:

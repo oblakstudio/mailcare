@@ -1,21 +1,24 @@
 <?php
+
 namespace App\Responses;
 
-use Illuminate\Http\Request;
-use PhpMimeMailParser\Parser;
 use App\Email;
 use App\Http\Resources\EmailResource;
+use Illuminate\Http\Request;
+use PhpMimeMailParser\Parser;
 
 class EmailResponse
 {
     protected $request;
+
     protected $parser;
+
     protected $acceptedHeaders = [
         'application/vnd.mailcare.v1+json',
         'application/json',
         'text/html',
         'text/plain',
-        'message/rfc2822'
+        'message/rfc2822',
     ];
 
     public function __construct(Request $request, Parser $parser)
@@ -47,12 +50,12 @@ class EmailResponse
     {
         $acceptedHeaders = $this->acceptedHeaders;
 
-        if (!$this->email->has_html) {
-            $acceptedHeaders = array_diff($acceptedHeaders, array('text/html'));
+        if (! $this->email->has_html) {
+            $acceptedHeaders = array_diff($acceptedHeaders, ['text/html']);
         }
 
-        if (!$this->email->has_text) {
-            $acceptedHeaders = array_diff($acceptedHeaders, array('text/plain'));
+        if (! $this->email->has_text) {
+            $acceptedHeaders = array_diff($acceptedHeaders, ['text/plain']);
         }
 
         return $contentType == $this->request->prefers($acceptedHeaders);
@@ -94,7 +97,6 @@ class EmailResponse
             $this->email->read();
         }
 
-
         return (new EmailResource($this->email))->response()->header(
             'Content-Type',
             'application/vnd.mailcare.v1+json; charset=UTF-8'
@@ -103,9 +105,10 @@ class EmailResponse
 
     protected function makeNotAcceptable()
     {
-        $acceptableList = implode(",", $this->acceptedHeaders);
+        $acceptableList = implode(',', $this->acceptedHeaders);
+
         return response()->json([
-            'error' => "Not acceptable 'Accept' header. Please use this list: $acceptableList."
-            ], 406);
+            'error' => "Not acceptable 'Accept' header. Please use this list: $acceptableList.",
+        ], 406);
     }
 }

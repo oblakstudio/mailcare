@@ -2,22 +2,21 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use \Carbon\Carbon;
 use App\Automation;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class AutomationsTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         config([
             'mailcare.auth' => true,
-            'mailcare.automations' => true
+            'mailcare.automations' => true,
         ]);
 
         $user = User::factory()->create();

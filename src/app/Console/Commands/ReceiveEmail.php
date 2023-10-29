@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Email;
-use App\Inbox;
 use App\Attachment;
-use App\Sender;
-use \PhpMimeMailParser\Parser;
-use Illuminate\Support\Facades\Storage;
+use App\Email;
 use App\Events\EmailReceived;
+use App\Inbox;
+use App\Sender;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+use PhpMimeMailParser\Parser;
 
 class ReceiveEmail extends Command
 {
@@ -44,7 +44,7 @@ class ReceiveEmail extends Command
      */
     public function handle()
     {
-        $this->info("Receiving email ...");
+        $this->info('Receiving email ...');
         $file = $this->argument('file');
         $this->info("from $file");
 
@@ -52,29 +52,29 @@ class ReceiveEmail extends Command
 
         $sender = Sender::updateOrCreate(
             [
-                'email' => $parser->getAddresses('from')[0]["address"]
+                'email' => $parser->getAddresses('from')[0]['address'],
             ],
             [
-                'display_name' => $parser->getAddresses('from')[0]["display"],
+                'display_name' => $parser->getAddresses('from')[0]['display'],
             ]
         );
-        
+
         $inbox = Inbox::updateOrCreate(
             [
-                'email' => $parser->getAddresses('to')[0]["address"]
+                'email' => $parser->getAddresses('to')[0]['address'],
             ],
             [
-                'display_name' => $parser->getAddresses('to')[0]["display"],
+                'display_name' => $parser->getAddresses('to')[0]['display'],
             ]
         );
 
         $email = new Email;
         $email->subject = $parser->getHeader('subject');
 
-        if (!empty($parser->getMessageBody('html'))) {
+        if (! empty($parser->getMessageBody('html'))) {
             $email->has_html = true;
         }
-        if (!empty($parser->getMessageBody('text'))) {
+        if (! empty($parser->getMessageBody('text'))) {
             $email->has_text = true;
         }
 
@@ -99,6 +99,7 @@ class ReceiveEmail extends Command
         }
 
         event(new EmailReceived($email->fresh()));
+
         return 0;
     }
 
@@ -110,10 +111,10 @@ class ReceiveEmail extends Command
         $parser = new Parser;
 
         if ($file == 'stream') {
-            $this->info("from stream");
-            $fd = fopen("php://stdin", "r");
-            $this->rawEmail = "";
-            while (!feof($fd)) {
+            $this->info('from stream');
+            $fd = fopen('php://stdin', 'r');
+            $this->rawEmail = '';
+            while (! feof($fd)) {
                 $this->rawEmail .= fread($fd, 1024);
             }
             fclose($fd);
@@ -122,6 +123,7 @@ class ReceiveEmail extends Command
             $this->info("from path $file");
             $parser->setPath($file);
         }
+
         return $parser;
     }
 }

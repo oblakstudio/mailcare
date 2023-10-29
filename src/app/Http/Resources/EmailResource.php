@@ -14,7 +14,7 @@ class EmailResource extends JsonResource
             'inbox' => new InboxResource($this->inbox),
             'subject' => $this->subject,
             'created_at' => $this->created_at->format('c'),
-            'read' => optional($this->read)->format('c'),
+            'read' => $this->read?->format('c'),
             'favorite' => $this->favorite,
             'has_html' => $this->has_html,
             'has_text' => $this->has_text,

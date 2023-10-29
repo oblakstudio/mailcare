@@ -8,12 +8,13 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-    	parent::setUp();
+        parent::setUp();
+        
         config([
-        	'mailcare.auth' => false,
-        	'mailcare.automations' => false,
+            'mailcare.auth' => false,
+            'mailcare.automations' => false,
         ]);
     }
 }

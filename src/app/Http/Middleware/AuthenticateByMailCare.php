@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Auth\Guard;
 
 class AuthenticateByMailCare
 {
@@ -20,7 +20,7 @@ class AuthenticateByMailCare
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
-    public function __construct(AuthFactory $auth)
+    public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
@@ -34,10 +34,10 @@ class AuthenticateByMailCare
      * @param  string|null  $field
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null, $field = null)
+    public function handle($request, Closure $next)
     {
         if (config('mailcare.auth')) {
-            return $this->auth->guard($guard)->basic($field ?: 'email') ?: $next($request);
+            return $this->auth->basic() ?: $next($request);
         }
 
         return $next($request);

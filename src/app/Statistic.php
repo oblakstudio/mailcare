@@ -2,14 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Statistic extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
+
     public $fillable = [
         'created_at',
         'emails_received',
@@ -18,6 +19,7 @@ class Statistic extends Model
         'cumulative_storage_used',
         'emails_deleted',
     ];
+
     protected $casts = [
         'emails_received' => 'int',
         'inboxes_created' => 'int',
@@ -25,6 +27,7 @@ class Statistic extends Model
         'cumulative_storage_used' => 'int',
         'emails_deleted' => 'int',
     ];
+
     protected $hidden = ['id'];
 
     public static function metaEmailsReceived(): int

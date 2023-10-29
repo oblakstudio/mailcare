@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Email;
 use App\Filters\EmailFilters;
-use App\Responses\EmailResponse;
 use App\Http\Resources\EmailResource;
+use App\Responses\EmailResponse;
 
 class EmailsController extends ApiController
 {

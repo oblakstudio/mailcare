@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Statistic;
 use App\Traits\StorageForHuman;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class StatisticCollection extends ResourceCollection
 {

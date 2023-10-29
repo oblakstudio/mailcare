@@ -26,6 +26,7 @@ class EmailFilters extends Filters
     protected function subject($subject)
     {
         $subject = str_replace('*', '%', $subject);
+
         return $this->builder->where('subject', 'like', "$subject");
     }
 

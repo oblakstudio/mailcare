@@ -2,13 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Automation extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'id',
         'title',
@@ -23,6 +23,7 @@ class Automation extends Model
         'post_raw',
         'emails_received',
     ];
+
     protected $casts = [
         'emails_received' => 'int',
         'has_attachments' => 'boolean',
@@ -30,6 +31,8 @@ class Automation extends Model
         'post_raw' => 'boolean',
         'in_error' => 'boolean',
     ];
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 }

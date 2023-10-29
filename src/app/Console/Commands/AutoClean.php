@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Email;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class AutoClean extends Command
 {
@@ -39,13 +39,13 @@ class AutoClean extends Command
      */
     public function handle()
     {
-        $this->line("-------------------------------------------------");
-        $this->line("AutoClean command executed at ".Carbon::now());
+        $this->line('-------------------------------------------------');
+        $this->line('AutoClean command executed at '.Carbon::now());
 
         $date = Carbon::now()->subMonth();
 
         $emails = Email::onlyTrashed()->where('deleted_at', '<', $date)->get();
-        $this->info("Emails to clean: ".count($emails));
+        $this->info('Emails to clean: '.count($emails));
         $emails->each->forceDelete();
 
         return 0;

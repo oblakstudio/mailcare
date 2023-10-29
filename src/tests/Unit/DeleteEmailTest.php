@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Email;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class DeleteEmailTest extends TestCase
 {
@@ -16,7 +16,7 @@ class DeleteEmailTest extends TestCase
     public function it_can_soft_delete_email()
     {
         $this->artisan(
-            'mailcare:email-receive', 
+            'mailcare:email-receive',
             ['file' => 'tests/storage/email_with_attachment.eml']
         );
 
