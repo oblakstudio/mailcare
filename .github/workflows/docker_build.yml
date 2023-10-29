@@ -67,6 +67,14 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.platform }}
           cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          
+      - name: Scan Docker Image
+        uses: docker/scout-action@v1
+        with:
+          command: cves,recommendations
+          image: ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+          only-severities: critical,high
+          summary: true
 
       - name: Export Image Digest
         run: |
